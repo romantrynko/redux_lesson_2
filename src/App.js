@@ -1,55 +1,50 @@
-import React, { useEffect, useReducer, useState, memo, useCallback, useMemo } from 'react';
+import React from 'react';
+import './App.css';
 
-// const reducer = (state, action) => {
-//   switch (action.type) {
-//     case 'increment':
-//       return { ...state, count: state.count + 1, name: state.name + 't' };
-//     case 'decrement':
-//       return { count: state.count - 1 };
-//     default:
-//       return state;
-//   }
-// }
+import { connect } from 'react-redux';
 
-const Test = memo(({ name, onClickHandler }) => {
-  console.log('rerender');
-  return <h2 onClick={onClickHandler}>Random component</h2>
-})
-
-
-function App() {
-
-  const [counter, setCounter] = useState(0);
-  const [counter1, setCounter1] = useState(10);
-
-  const fn = useCallback(() => {
-    setCounter1(counter1 + 1);
-  }, [counter1]);
-
-  const calcSomeHardStuff = () => {
-    let val = 0;
-    for(let i = 0; i < counter1; i++) {
-      console.log(i);
-      val++
+function App({ products, cart, removeItemFromCart, addItemToCart }) {
+  const handleItemClick = (item) => {
+    if (cart.find(el => el.id === item.id)) {
+      removeItemFromCart(item)
+    } else {
+      addItemToCart(item)
     }
-
-    return val;
   }
-
-  const someValue = useMemo(()=> calcSomeHardStuff(), [counter1]);
 
   return (
     <div className='App'>
-      <h1 onClick={() => {
-        setCounter(counter + 1)
-      }}
-      >
-        Hello {counter} {someValue}
-      </h1>
-      <Test name='test' onClickHandler={fn} />
+      <h1 onClick={() => { }}>Cart items: {cart.length}</h1>
+      <ul>
+        {products.map(product => (
+          <li className={cart.find(el => el.id === product.id) ? 'highlight' : ''} key={product.id} onClick={() => handleItemClick(product)}>
+            {product.name} - {product.price}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
-export default App;
- 
+const mapStateToProps = (state) => {
+  return {
+    products: state.products,
+    cart: state.cart
+  }
+}
+
+const addItemToCart = (item) => {
+  return {
+    type: 'ADD_TO_CART',
+    payload: item
+  }
+}
+
+const removeItemFromCart = (item) => {
+  return {
+    type: 'REMOVE_FROM_CART',
+    payload: item
+  }
+}
+
+export default connect(mapStateToProps, { addItemToCart, removeItemFromCart })(App);
