@@ -1,0 +1,11 @@
+.header {
+    padding: 20px;
+    text-align: center;
+    justify-content: center;
+    background: #1abc9c;
+    color: white;
+    font-size: 20px;
+    border-radius: 10px 10px 10px 10px;
+    box-shadow: 0px 0px 39px 9px rgba(0,0,0,0.2);
+    align-items: flex-end;
+}

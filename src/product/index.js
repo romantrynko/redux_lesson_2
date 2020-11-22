@@ -1,35 +1,24 @@
 import React from 'react'
 import { connect } from 'react-redux';
-import { addToCart, removeFromCart, addToWishList, removeFromWishList } from '../actions'
+import { toggleItemToCart, toggleItemToWishList } from '../actions'
+import './index.css'
 
-const Product = ({ product, cart, wishList, addToCart, removeFromCart, addToWishList, removeFromWishList }) => {
-
-    const handleItemOnClick = (item) => {
-        if (!!cart.find((el) => el.id === item.id)) {
-            removeFromCart(item);
-        } else {
-            addToCart(item);
-        }
-    };
-
-    const handleWishList = (item) => {
-        if (!!wishList.find(el => el.id === item.id)) {
-            removeFromWishList(item)
-        } else {
-            addToWishList(item)
-        }
-    }
+const Product = ({ cart, product, wishList, toggleItemToCart, toggleItemToWishList }) => {
 
     return (
         <div>
             <div
                 key={product.id}
+                className='product'
             >
-                {product.id}. {product.name} - {product.price}
+                {product.id}. {product.name} - Price: $ {product.price}
                 <br />
-                <button onClick={() => handleItemOnClick(product)}>Add to cart</button>
-                <button onClick={() => handleWishList(product)}>Like</button>
-                <hr />
+                <button
+                    className={cart.find(el => el.id === product.id) ? 'cartAdd' : ''}
+                    onClick={() => toggleItemToCart(product)}>Add to cart</button>
+                <button
+                    className={wishList.find(el => el.id === product.id) ? 'wishListAdd' : ''}
+                    onClick={() => toggleItemToWishList(product)}>Like</button>
             </div>
         </div>
     )
@@ -40,11 +29,9 @@ const mapStateToProps = (state) => {
         cart: state.cart,
         wishList: state.wishList
     }
-  }
+}
 
 export default connect(mapStateToProps, {
-    addToCart,
-    removeFromCart,
-    addToWishList,
-    removeFromWishList
+    toggleItemToCart,
+    toggleItemToWishList
 })(Product);

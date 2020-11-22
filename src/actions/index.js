@@ -1,27 +1,13 @@
-export const addToCart = (item) => {
+export const toggleItemToCart = (item) => {
     return {
-        type: 'ADD_TO_CART',
+        type: 'TOGGLE_ITEM_TO_CART',
         payload: item
     }
 }
 
-export const removeFromCart = (item) => {
+export const toggleItemToWishList = (item) => {
     return {
-        type: 'REMOVE_FROM_CART',
-        payload: item
-    }
-}
-
-export const addToWishList = (item) => {
-    return {
-        type: 'ADD_TO_WISHLIST',
-        payload: item
-    }
-}
-
-export const removeFromWishList = (item) => {
-    return {
-        type: 'REMOVE_FROM_WISHLIST',
+        type: 'TOGGLE_ITEM_TO_WISHLIST',
         payload: item
     }
 }
