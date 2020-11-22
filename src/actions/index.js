@@ -12,9 +12,16 @@ export const removeFromCart = (item) => {
     }
 }
 
-export const mapStateToProps = (state) => {
+export const addToWishList = (item) => {
     return {
-        products: state.products,
-        cart: state.cart
+        type: 'ADD_TO_WISHLIST',
+        payload: item
+    }
+}
+
+export const removeFromWishList = (item) => {
+    return {
+        type: 'REMOVE_FROM_WISHLIST',
+        payload: item
     }
 }
