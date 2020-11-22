@@ -2,49 +2,35 @@ import React from 'react';
 import './App.css';
 
 import { connect } from 'react-redux';
+import {addToCart, removeFromCart, mapStateToProps} from './actions'
 
-function App({ products, cart, removeItemFromCart, addItemToCart }) {
-  const handleItemClick = (item) => {
-    if (cart.find(el => el.id === item.id)) {
-      removeItemFromCart(item)
+function App({ products, cart, addToCart, removeFromCart }) {
+
+
+  const handleItemOnClick = (item) => {
+    if (!!cart.find((el) => el.id === item.id)) {
+      removeFromCart(item);
     } else {
-      addItemToCart(item)
+      addToCart(item);
     }
-  }
+  };
 
   return (
     <div className='App'>
-      <h1 onClick={() => { }}>Cart items: {cart.length}</h1>
-      <ul>
-        {products.map(product => (
-          <li className={cart.find(el => el.id === product.id) ? 'highlight' : ''} key={product.id} onClick={() => handleItemClick(product)}>
-            {product.name} - {product.price}
-          </li>
-        ))}
-      </ul>
+      <h2>Items in cart: {cart.length}</h2>
+      {products.map(product => (
+        <div
+          key={product.id}
+          onClick={() => handleItemOnClick(product)}
+        >
+          {product.id}. {product.name} - {product.price}
+        </div>
+      ))}
     </div>
   );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    products: state.products,
-    cart: state.cart
-  }
-}
-
-const addItemToCart = (item) => {
-  return {
-    type: 'ADD_TO_CART',
-    payload: item
-  }
-}
-
-const removeItemFromCart = (item) => {
-  return {
-    type: 'REMOVE_FROM_CART',
-    payload: item
-  }
-}
-
-export default connect(mapStateToProps, { addItemToCart, removeItemFromCart })(App);
+export default connect(mapStateToProps, {
+  addToCart,
+  removeFromCart
+})(App);
